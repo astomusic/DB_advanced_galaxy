@@ -2,7 +2,10 @@ package database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import dto.User;
 
 public class DatabaseConnection {
 	// JDBC driver name and database URL
@@ -15,15 +18,15 @@ public class DatabaseConnection {
 
 	private ConnectionPool cp;
 	private static DatabaseConnection dc;
-	
-	static public DatabaseConnection getInstance(){
-		if(dc == null)
+
+	static public DatabaseConnection getInstance() {
+		if (dc == null)
 			dc = new DatabaseConnection();
 
 		return dc;
 	}
 
-	private DatabaseConnection(){
+	private DatabaseConnection() {
 		try {
 			Class.forName(JDBC_DRIVER).newInstance();
 			cp = new ConnectionPool(DB_URL, USER, PASS);
@@ -51,5 +54,65 @@ public class DatabaseConnection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public User selectUser(int UID) {
+		System.out.println("Select User");
+		User user = null;
+		try {
+			Connection conn = cp.checkout();
+
+			String sql = "SELECT * FROM user2db WHERE UID = ?";
+
+			PreparedStatement psmt = null;
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, UID);
+			ResultSet rs = psmt.executeQuery();
+			
+			if (rs.next()) {
+				user = new User(rs.getInt("UID"), rs.getInt("GID"), rs.getInt("DBID"));
+				System.out.println(user.getUID());
+			}
+
+			rs.close();
+			psmt.close();
+			cp.checkin(conn);
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
+	public void insertUser(User user) {
+
+	}
+
+	public int getLast() {
+		System.out.println("Getting Last ID");
+		int result = 0;
+		try {
+			Connection conn = cp.checkout();
+
+			String sql = "SELECT LAST_INSERT_ID() FROM user2db";
+
+			PreparedStatement psmt = null;
+			psmt = conn.prepareStatement(sql);
+			ResultSet rs = psmt.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+
+			rs.close();
+			psmt.close();
+			cp.checkin(conn);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
 	}
 }

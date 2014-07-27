@@ -14,8 +14,16 @@ public class DatabaseConnection {
 	static final String PASS = "db1004";
 
 	private ConnectionPool cp;
+	private static DatabaseConnection dc;
+	
+	static public DatabaseConnection getInstance(){
+		if(dc == null)
+			dc = new DatabaseConnection();
 
-	public DatabaseConnection() {
+		return dc;
+	}
+
+	private DatabaseConnection(){
 		try {
 			Class.forName(JDBC_DRIVER).newInstance();
 			cp = new ConnectionPool(DB_URL, USER, PASS);
@@ -27,6 +35,7 @@ public class DatabaseConnection {
 	}
 
 	public void createUser() {
+		System.out.println("Create New User");
 		try {
 			Connection conn = cp.checkout();
 

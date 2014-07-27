@@ -1,11 +1,11 @@
 package galaxy;
 
-import database.DatabaseConnection;
+import database.CreateUser;
 
 public class Galaxy {
 
 	public static void main(String[] args) {
-		DatabaseConnection dc = new DatabaseConnection();
-		dc.createUser();
+		CreateUser createUserTread = new CreateUser();
+		createUserTread.run();
 	}
 }

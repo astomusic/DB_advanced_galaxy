@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
@@ -12,40 +13,34 @@ public class DatabaseConnection {
 	static final String USER = "popi";
 	static final String PASS = "db1004";
 
-	public void connection() {
+	private ConnectionPool cp;
+
+	public DatabaseConnection() {
 		try {
 			Class.forName(JDBC_DRIVER).newInstance();
-		} catch (Exception E) {
-			System.err.println("Exception while loading driver");
-			E.printStackTrace();
-		}
-
-		try {
-			ConnectionPool cp = new ConnectionPool(DB_URL, USER, PASS);
-
-			Connection[] connArr = new Connection[7];
-
-			for (int i = 0; i < connArr.length; i++) {
-				connArr[i] = cp.checkout();
-				System.out.println("Checking out..." + connArr[i]);
-				System.out.println("Available Connections ... " + cp.availableCount());
-			}
-
-			for (int i = 0; i < connArr.length; i++) {
-				cp.checkin(connArr[i]);
-				System.out.println("Checked in..." + connArr[i]);
-				System.out.println("Available Connections ... " + cp.availableCount());
-			}
+			cp = new ConnectionPool(DB_URL, USER, PASS);
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void main (String[] args)   
-    {
-		DatabaseConnection dc = new DatabaseConnection();
-		dc.connection();
-    }
+
+	public void createUser() {
+		try {
+			Connection conn = cp.checkout();
+
+			String sql = "CALL sp_adduser(@uid, @gid, @dbid)";
+
+			PreparedStatement psmt = null;
+			psmt = conn.prepareStatement(sql);
+			psmt.execute();
+
+			psmt.close();
+			cp.checkin(conn);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

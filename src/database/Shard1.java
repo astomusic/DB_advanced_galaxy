@@ -41,7 +41,7 @@ public class Shard1 {
 		try {
 			Connection conn = cp.checkout();
 
-			String sql = "INSERT INTO user VALUES (?, ?)";
+			String sql = "CALL sp_addship( ? , ? )";
 
 			PreparedStatement psmt = null;
 			psmt = conn.prepareStatement(sql);

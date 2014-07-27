@@ -26,14 +26,14 @@ CREATE TABLE IF NOT EXISTS user (
   REFERENCES galaxy (GID)
 );
 
-
+select * from user;
 
 -- -----------------------------------------------------
 -- Table `mydb`.`slog`
 -- -----------------------------------------------------
 DROP TABLE IF exists slog;
 CREATE TABLE IF NOT EXISTS slog (
-  LOGID INT(11) NOT NULL,
+  LOGID INT(11) auto_increment not NULL,
   UID INT(11) NULL,
   LOG VARCHAR(64) NULL,
   LOG_TIME TIMESTAMP NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS slog (
 -- -----------------------------------------------------
 DROP TABLE IF exists ship;
 CREATE TABLE IF NOT EXISTS ship (
-  SID INT(11) NOT NULL,
+  SID INT(11) auto_increment not NULL,
   UID INT(11) NULL,
   GID TINYINT NULL,
   ATK INT(11) NULL,
@@ -58,9 +58,39 @@ CREATE TABLE IF NOT EXISTS ship (
   REFERENCES user (UID , GID)
 );
 
+select * from ship;
+
 show tables;
 
 insert INTO galaxy values(1, 'El Facil','100000');
 insert INTO galaxy values(2, 'Odin','100000');
 insert INTO galaxy values(3, 'Iserlohn','100000');
 insert INTO galaxy values(4, 'Heinessen','100000');
+
+
+DROP PROCEDURE IF EXISTS sp_addship;
+DELIMITER $$
+CREATE PROCEDURE sp_addship(in ouid int, in ogid tinyint) 
+begin
+	DECLARE idx int;
+	DECLARE max int;
+	DECLARE oatk int;
+
+	START transaction;
+
+	INSERT INTO user values(ouid, ogid);	
+	
+	SET idx = 0;
+	SET max = 10;
+
+	WHILE idx < max DO
+		set oatk = FLOOR(5 + RAND()*(101-5));
+		INSERT INTO ship (UID, GID, ATK, TYPE) VALUES(ouid,ogid,oatk,'A');
+		SET idx = idx + 1;
+	END WHILE;
+
+	COMMIT;
+end $$	
+DELIMITER ;
+
+CALL sp_addship(58, 1);

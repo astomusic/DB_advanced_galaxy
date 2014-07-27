@@ -1,18 +1,31 @@
 package web;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
 
-public class WebServer {
-	public static void main(String[] args) throws IOException {
-		ServerSocket server =  new ServerSocket(5000);
-		System.out.println("WebServer Start");
-				
-		Socket connection = null;
-		while(true) {
-			connection = server.accept();
-		}
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 
-	}
+public class WebServer{
+
+    public static void main(String[] args) throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress(5000), 0);
+        server.createContext("/", new MyHandler());
+        server.setExecutor(null); // creates a default executor
+        server.start();
+        System.out.println("WebServer Start");
+    }
+
+    static class MyHandler implements HttpHandler {
+        public void handle(HttpExchange t) throws IOException {
+            String response = "This is the response";
+            t.sendResponseHeaders(200, response.length());
+            OutputStream os = t.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
 }

@@ -8,9 +8,11 @@ import java.io.OutputStream;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import database.DatabaseConnection;
+
 public class Handler implements HttpHandler {
 	public void handle(HttpExchange t) throws IOException {
-		String response = readFileAsString("/Users/astomusic/Documents/workspace/DB_advanced_galaxy/resource/main.html");
+		String response = javaIntoHtml();
 		t.sendResponseHeaders(200, response.length());
 		OutputStream os = t.getResponseBody();
 		os.write(response.getBytes());
@@ -28,6 +30,15 @@ public class Handler implements HttpHandler {
 		}
 		reader.close();
 		return fileData.toString();
+	}
+	
+	private String javaIntoHtml() throws IOException {
+		DatabaseConnection dc = DatabaseConnection.getInstance();
+		String last = String.valueOf(dc.getLast());
+		String result = readFileAsString("/Users/astomusic/Documents/workspace/DB_advanced_galaxy/resource/main.html");
+		result = result.replaceAll("\\{user\\}", last);
+		System.out.println(result);
+		return result;
 	}
 
 }

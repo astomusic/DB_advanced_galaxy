@@ -102,7 +102,7 @@ public class DatabaseConnection {
 		try {
 			Connection conn = cp.checkout();
 
-			String sql = "SELECT LAST_INSERT_ID() FROM user2db";
+			String sql = "SELECT LAST_INSERT_ID() FROM user2db;";
 
 			PreparedStatement psmt = null;
 			psmt = conn.prepareStatement(sql);

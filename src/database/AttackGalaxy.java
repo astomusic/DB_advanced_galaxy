@@ -10,14 +10,28 @@ public class AttackGalaxy extends Thread{
 	//구한값을 shard1과 shard2의 해당 은하에 hp에 업데이트한다.
 	//hp를 얻고 값을 업데이트하는 동안 어떻게 2개의 샤드에 transition을 유지하고 동기화 할것인가?
 	//반복
+	private final int galaxy = 4;
+	
 	public void run() {
 		System.out.println("AttackGalaxy Thread Start");
 		DatabaseConnection dc = DatabaseConnection.getInstance();
 		
 		int last = dc.getLast();
 		int ramdomUser  = (int) Math.random() * last + 1;
-		
 		User user = dc.selectUser(ramdomUser);
+		
+		int ramdomGalaxy  = (int) Math.random() * galaxy + 1;
+		int userGalaxy = user.getGID();
+		while(ramdomGalaxy == userGalaxy) { 
+			ramdomGalaxy  = (int) Math.random() * galaxy + 1;
+		}
+		
+		int userDB = user.getDBID();
+		if(userDB == 1) {
+			//shard1에서 user ship을 찾는다.
+		} else {
+			//shard2에서 user ship을 찾는다.
+		}
 		
 		
 	}

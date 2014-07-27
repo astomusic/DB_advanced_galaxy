@@ -59,3 +59,8 @@ CREATE TABLE IF NOT EXISTS ship (
 );
 
 show tables;
+
+insert INTO galaxy values(1, 'El Facil','100000');
+insert INTO galaxy values(2, 'Odin','100000');
+insert INTO galaxy values(3, 'Iserlohn','100000');
+insert INTO galaxy values(4, 'Heinessen','100000');

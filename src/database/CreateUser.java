@@ -4,7 +4,7 @@ import dto.User;
 
 
 public class CreateUser extends Thread{
-	private final int userNumber = 10; // 생성할 유저수
+	private final int userNumber = 1; // 생성할 유저수
 	
 	public void run() {
 		System.out.println("CreateUser Thread Start");
@@ -18,7 +18,7 @@ public class CreateUser extends Thread{
 			last = dc.getLast();
 			user = dc.selectUser(last);
 			
-			
+			dc.insertUser(user);			
 		}
 		
 	}

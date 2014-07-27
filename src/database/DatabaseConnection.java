@@ -18,6 +18,9 @@ public class DatabaseConnection {
 
 	private ConnectionPool cp;
 	private static DatabaseConnection dc;
+	
+	private Shard1 s1 = Shard1.getInstance();
+	private Shard2 s2 = Shard2.getInstance();
 
 	static public DatabaseConnection getInstance() {
 		if (dc == null)
@@ -86,7 +89,11 @@ public class DatabaseConnection {
 	}
 	
 	public void insertUser(User user) {
-
+		if(user.getDBID() == 1) {
+			s1.inserUser(user);
+		} else {
+			s2.inserUser(user);
+		}
 	}
 
 	public int getLast() {

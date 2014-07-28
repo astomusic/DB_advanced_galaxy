@@ -13,14 +13,16 @@ public class DatabaseConnection {
 	static final String DB_URL = "jdbc:mysql://localhost/popidb";
 
 	// Database credentials
-	static final String USER = "root";
-	static final String PASS = "";
+	static final String USER = "popi";
+	static final String PASS = "db1004";
 
 	private ConnectionPool cp;
 	private static DatabaseConnection dc;
 	
-	private Shard1 s1 = Shard1.getInstance();
-	private Shard2 s2 = Shard2.getInstance();
+	private DatabaseMapping map = new DatabaseMapping();
+	
+	private Shard s1 = map.requestShard("shard1");
+	private Shard s2 = map.requestShard("shard2");
 
 	static public DatabaseConnection getInstance() {
 		if (dc == null)

@@ -13,8 +13,8 @@ public class DatabaseConnection {
 	static final String DB_URL = "jdbc:mysql://localhost/popidb";
 
 	// Database credentials
-	static final String USER = "popi";
-	static final String PASS = "db1004";
+	static final String USER = "root";
+	static final String PASS = "";
 
 	private ConnectionPool cp;
 	private static DatabaseConnection dc;

@@ -20,7 +20,5 @@ public class CreateUser extends Thread{
 			
 			dc.insertUser(user);			
 		}
-		
 	}
-
 }

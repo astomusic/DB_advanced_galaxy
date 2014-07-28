@@ -6,26 +6,26 @@ import java.sql.SQLException;
 
 import dto.User;
 
-public class Shard1 {
+public class Shard2 {
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost/popidb";
 
 	// Database credentials
-	static final String USER = "popi";
-	static final String PASS = "db1004";
+	static final String USER = "root";
+	static final String PASS = ""; //881214 xmfoqvj
 
 	private ConnectionPool cp;
-	private static Shard1 s1;
+	private static Shard2 s2;
 
-	static public Shard1 getInstance() {
-		if (s1 == null)
-			s1 = new Shard1();
+	static public Shard2 getInstance() {
+		if (s2 == null)
+			s2 = new Shard2();
 
-		return s1;
+		return s2;
 	}
 
-	private Shard1() {
+	private Shard2() {
 		try {
 			Class.forName(JDBC_DRIVER).newInstance();
 			cp = new ConnectionPool(DB_URL, USER, PASS);
@@ -35,9 +35,9 @@ public class Shard1 {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public void inserUser(User user) {
-		System.out.println("Insert User to shard1");
+		System.out.println("Insert User to shard2");
 		try {
 			Connection conn = cp.checkout();
 

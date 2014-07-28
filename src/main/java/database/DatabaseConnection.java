@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dto.User;
+import dto.User2DB;
 
 public class DatabaseConnection {
 	// JDBC driver name and database URL
@@ -42,7 +43,7 @@ public class DatabaseConnection {
 		}
 	}
 
-	public void createUser() {
+	public void createGlobalUser() {
 		System.out.println("Create New User");
 		try {
 			Connection conn = cp.checkout();
@@ -61,9 +62,9 @@ public class DatabaseConnection {
 		}
 	}
 
-	public User selectUser(int UID) {
+	public User2DB selectGlobalUser(int UID) {
 		System.out.println("Select User");
-		User user = null;
+		User2DB user = null;
 		try {
 			Connection conn = cp.checkout();
 
@@ -75,8 +76,7 @@ public class DatabaseConnection {
 			ResultSet rs = psmt.executeQuery();
 			
 			if (rs.next()) {
-				user = new User(rs.getInt("UID"), rs.getInt("GID"), rs.getInt("DBID"));
-				System.out.println(user.getUID());
+				user = new User2DB(rs.getInt("UID"), rs.getInt("GID"), rs.getInt("DBID"));
 			}
 
 			rs.close();
@@ -90,11 +90,19 @@ public class DatabaseConnection {
 		return user;
 	}
 	
-	public void insertUser(User user) {
+	public void insertUser(User2DB user) {
 		if(user.getDBID() == 1) {
 			s1.inserUser(user);
 		} else {
 			s2.inserUser(user);
+		}
+	}
+	
+	public User selectUser(User2DB user) {
+		if(user.getDBID() == 1) {
+			return s1.selectUser(user);
+		} else {
+			return s2.selectUser(user);
 		}
 	}
 

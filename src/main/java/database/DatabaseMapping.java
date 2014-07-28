@@ -9,21 +9,22 @@ public class DatabaseMapping {
 	private String url;
 	private String id;
 	private String pw;
+	private String name;
 
 	public DatabaseMapping() {
 		driver = "com.mysql.jdbc.Driver";
 		url = "jdbc:mysql://localhost/popidb";
 		id = "popi";
 		pw = "db1004";
-
-		map.put("shard1", new Shard(driver, url, id, pw));
+		name = "shard1";	
+		map.put(name, new Shard(driver, url, id, pw, name));
 
 		driver = "com.mysql.jdbc.Driver";
 		url = "jdbc:mysql://localhost/popidb";
 		id = "popi";
 		pw = "db1004";
-
-		map.put("shard2", new Shard(driver, url, id, pw));
+		name = "shard2";
+		map.put(name, new Shard(driver, url, id, pw, name));
 	}
 
 	public Shard requestShard(String shard) {

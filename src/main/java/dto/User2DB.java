@@ -1,16 +1,18 @@
 package dto;
 
-public class User {
+public class User2DB {
 	private int UID;
 	private int GID;
+	private int DBID;
 	
-	public User() {
+	public User2DB() {
 		
 	}
 	
-	public User(int UID, int GID){
+	public User2DB(int UID, int GID, int DBID){
 		this.UID = UID;
 		this.GID = GID;
+		this.DBID = DBID;
 	}
 	
 	public int getUID() {
@@ -24,5 +26,11 @@ public class User {
 	}
 	public void setGID(int gID) {
 		GID = gID;
+	}
+	public int getDBID() {
+		return DBID;
+	}
+	public void setDBID(int dBID) {
+		DBID = dBID;
 	}
 }

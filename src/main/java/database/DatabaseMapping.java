@@ -30,5 +30,4 @@ public class DatabaseMapping {
 	public Shard requestShard(String shard) {
 		return map.get(shard);
 	}
-
 }

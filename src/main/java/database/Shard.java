@@ -71,4 +71,52 @@ public class Shard {
 		}
 		return user;
 	}
+
+	public int getSumShipAttack(User2DB user2db) {
+		System.out.println("Get Sum of attckpower from" + shardName + " - " +user2db.getUID());
+		int sum = 0;
+		try {
+			Connection conn = cp.checkout();
+
+			String sql = "SELECT sum(ATK) FROM ship WHERE UID = ?";
+
+			PreparedStatement psmt = null;
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, user2db.getUID());
+			ResultSet rs = psmt.executeQuery();
+			
+			if (rs.next()) {
+				sum = rs.getInt(1);
+			}
+
+			rs.close();
+			psmt.close();
+			cp.checkin(conn);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sum;
+	}
+
+	public void attackGalaxy(int attackPower, int ramdomGalaxy) {
+		System.out.println(ramdomGalaxy + " Galaxy attacked " + attackPower + " damaged " );
+		try {
+			Connection conn = cp.checkout();
+
+			String sql = "CALL sp_attackGalaxy( ? , ? )";
+
+			PreparedStatement psmt = null;
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, attackPower);
+			psmt.setInt(2, ramdomGalaxy);
+			psmt.execute();
+
+			psmt.close();
+			cp.checkin(conn);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

@@ -98,11 +98,11 @@ public class DatabaseConnection {
 		}
 	}
 	
-	public User selectUser(User2DB user) {
-		if(user.getDBID() == 1) {
-			return s1.selectUser(user);
+	public User selectUser(User2DB user2db) {
+		if(user2db.getDBID() == 1) {
+			return s1.selectUser(user2db);
 		} else {
-			return s2.selectUser(user);
+			return s2.selectUser(user2db);
 		}
 	}
 
@@ -112,8 +112,8 @@ public class DatabaseConnection {
 		try {
 			Connection conn = cp.checkout();
 
-			String sql = "SELECT LAST_INSERT_ID() FROM user2db;";
-
+			//String sql = "SELECT LAST_INSERT_ID() FROM user2db;";
+			String sql = "SELECT UID FROM user2db ORDER BY UID DESC LIMIT 1";
 			PreparedStatement psmt = null;
 			psmt = conn.prepareStatement(sql);
 			ResultSet rs = psmt.executeQuery();
@@ -131,5 +131,21 @@ public class DatabaseConnection {
 		}
 
 		return result;
+	}
+
+	public int getSumShipAttack(User2DB user2db) {
+		if(user2db.getDBID() == 1) {
+			return s1.getSumShipAttack(user2db);
+		} else {
+			return s2.getSumShipAttack(user2db);
+		}
+	}
+
+	public void attackGalaxy(int attackPower, int ramdomGalaxy) {
+		if(ramdomGalaxy > 2) {
+			s2.attackGalaxy(attackPower, ramdomGalaxy);
+		} else {
+			s1.attackGalaxy(attackPower, ramdomGalaxy);
+		}
 	}
 }

@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS galaxy (
   PRIMARY KEY (GID)
 );
 
-
+select * from galaxy;
 -- -----------------------------------------------------
 -- Table `mydb`.`user`
 -- -----------------------------------------------------
@@ -94,3 +94,15 @@ end $$
 DELIMITER ;
 
 CALL sp_addship(58, 1);
+
+DROP PROCEDURE IF EXISTS sp_attackGalaxy;
+DELIMITER $$
+CREATE PROCEDURE sp_attackGalaxy(in oattack int, in ogid tinyint) 
+begin
+	START transaction;
+	
+	UPDATE galaxy SET hp = hp - oattack WHERE GID = ogid;
+
+	COMMIT;
+end $$	
+DELIMITER ;
